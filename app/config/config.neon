@@ -1,0 +1,35 @@
+parameters:
+
+
+application:
+	errorPresenter: Error
+	mapping:
+		*: App\*Module\Presenters\*Presenter
+
+
+session:
+	expiration: 14 days
+
+
+services:
+	router: App\RouterFactory::createRouter
+	authorizator:
+		class: Nette\Security\Permission
+		setup:
+			- addRole('guest')
+			- addRole('member', 'guest')
+			- addRole('admin', 'member')
+			- addResource('Homepage')
+			- addResource('Sign')
+			- addResource('Event')
+			- addResource('User')
+			- addResource('Post')
+			- allow('guest', ['Sign', 'Homepage'])
+			- allow('guest', ['Event','Post', 'User'], 'show')
+			- allow('member', ['Event','Post', 'User'], ['edit', 'create'])
+			- allow('admin')
+	- App\Model\ArticleManager
+	- App\Model\EventManager
+	- App\Model\UserManager
+
+

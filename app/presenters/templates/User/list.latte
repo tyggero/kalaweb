@@ -1,0 +1,13 @@
+{block content}
+    <h1 n:block="title">Správa uživatelů</h1>
+
+    <div n:foreach="$users as $usr" class="post">
+        <h2><a href="{link User:edit $usr->id}">{$usr->nickname} - {$usr->firstname} {$usr->surname}</a></h2>
+        <div>E-mail: {$usr->email}</div>
+        <div>ID: {$usr->id}</div>
+        <div>role: {$usr->role}</div>
+
+    </div>
+
+    <h3><a n:href="User:list" n:if="$user->isAllowed('User','create')">Přidat nového uživatele</a></h3>
+{/block}

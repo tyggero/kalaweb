@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+	<!-- Bootstrap Core CSS -->
+	<link rel="stylesheet" href="{$basePath}/css/bootstrap.min.css">
+
+	<!-- Custom CSS: You can use this stylesheet to override any Bootstrap styles and/or apply your own styles -->
+	<link rel="stylesheet" href="{$basePath}/css/style.css" type="text/css" />
+	<link rel="stylesheet" href="{$basePath}/css/custom.css" type="text/css" />
+	{ifset styles}{include styles}{/ifset}
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom Fonts from Google -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+	<title>{ifset title}{include title|stripHtml} | {/ifset}39. skautský oddíl Kalahari</title>
+</head>
+
+<body>
+	<!-- Navigation -->
+    <nav id="siteNav" class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Logo and responsive toggle -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" n:href="Homepage:">
+	               <span ><img class="glyphicon glyphicon-fire" alt=""></span> 
+                   Kalahari
+                </a>
+            </div>
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li n:if="$user->isAllowed('User', 'list')"><a n:href="User:list">Správa uživatelů</a></li>
+		    		<li><a n:href="Homepage:vedouci">Vedoucí oddílu</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Akce<span class="caret"></span></a>
+						<ul class="dropdown-menu" aria-labelledby="about-us">
+							<li><a n:href="Homepage:">Zobrazit budoucí</a></li>
+							<li><a n:if="$user->isAllowed('Event', 'create')" n:href="Event:create">Vytvořit novou</a></li>
+						</ul>
+					</li>
+                    {if $user->loggedIn}
+				    	<li>Přihlášen: {$user->getIdentity()->nickname}</li>
+				    	<li><a n:href="Sign:out">Odhlásit</a></li>
+				    {else}
+				        <li><a n:href="Sign:in">Přihlásit se</a></li>
+				        <li><a n:href="Sign:up">Registrovat se</a></li>
+				    {/if}
+                </ul>
+                
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container -->
+    </nav>
+
+	<header>
+		<div class="header-content">
+            <div class="header-content-inner">
+                <h1>{ifset title}{include title|stripHtml}{/ifset}</h1>
+                <p>39. skautský oddíl z Plzně</p>
+            </div>
+        </div>
+
+		<!-- STARE MENU
+		<ul class="navig">
+		    <li><a n:href="Homepage:">Úvodní stránka</a></li>
+		    <li><a n:href="Homepage:">Akce</a></li>
+		    <li n:if="$user->isAllowed('User', 'list')"><a n:href="User:list">Správa uživatelů</a></li>
+		    <li><a n:href="Homepage:vedouci">Vedoucí oddílu</a></li>
+		    {if $user->loggedIn}
+		    	<li>Přihlášen: {$user->getIdentity()->nickname} <a n:href="Sign:out">Odhlásit</a></li>
+		    {else}
+		        <li><a n:href="Sign:in">Přihlásit se</a> / <a n:href="Sign:up">Registrovat se</a></li>
+		    {/if}
+		</ul>
+		-->
+	</header>
+
+	<div class="container-fluid content">
+		<div>
+			<!-- Nette flash messages -->
+			<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type} alert-dismissible col-s-12" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Skrýt"><span aria-hidden="true">&times;</span></button>
+				{$flash->message}
+			</div>
+			<div class="col-s-12">
+				<!-- sem se vloží obsah jednotlivých šablon -->
+				{include content}
+			</div>
+		</div>
+	</div>
+
+	<footer class="page-footer">    	
+        <!-- Copyright etc -->
+        <div class="small-print">
+        	<div class="container">
+        		<p>Copyright &copy; Tygr Tkaj 2017</p>
+        	</div>
+        </div>
+    </footer>
+
+	{block scripts}
+	<!-- Nette forms JS -->
+	<script src="https://nette.github.io/resources/js/netteForms.min.js"></script>
+
+	<!-- jQuery -->
+    <script src="{$basePath}/js/jquery-1.11.3.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{$basePath}/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="{$basePath}/js/jquery.easing.min.js"></script>
+    
+    <!-- Custom Javascript -->
+    <script src="{$basePath}/js/custom.js"></script>
+	{/block}
+</body>
+</html>

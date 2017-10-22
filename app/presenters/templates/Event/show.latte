@@ -1,0 +1,29 @@
+{block content}
+
+<p>
+	<a n:href="Homepage:default">← zpět na hlavní stránku</a>
+</p>
+
+<h1 n:block="title">{$event->name}</h1>
+
+<div class="post">
+    <div class="datum">
+    	{$event->start_date|date:'F j, Y'}
+    	{if $event->end_date != $event->start_date}
+    		 - {$event->end_date|date:'F j, Y'}
+    	{/if}
+    </div>
+
+	<div class="sraz">Sraz: {$event->start_time|date:'G:i'} {$event->start_place}</div>
+	<div class="sraz">Konec: {$event->end_time|date:'G:i'} {$event->end_place}</div>
+	<div n:if="$event->fee" class="cena">Poplatek: {$event->fee}</div>
+
+    <div>{$event->text}</div>
+    <div>Tajné poznámky: <i>{$event->notes}</i></div>
+</div>
+
+<div class="date">Naposledy upraveno {$event->updated_at|date:'F j, Y'}</div>
+
+<div n:if="$user->isAllowed('Event','edit')"><a n:href="Event:edit $event->id">Upravit akci</a></div>
+<div n:if="$user->isAllowed('Event','remove')"><a n:href="Event:remove $event->id">Smazat akci</a></div>
+
