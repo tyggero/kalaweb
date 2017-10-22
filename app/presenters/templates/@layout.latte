@@ -48,6 +48,7 @@
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="nav navbar-nav navbar-right">
                     <li n:if="$user->isAllowed('User', 'list')"><a n:href="User:list">Správa uživatelů</a></li>
+					<li><a n:href="Homepage:info">Info</a></li>
 		    		<li><a n:href="Homepage:vedouci">Vedoucí oddílu</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Akce<span class="caret"></span></a>
