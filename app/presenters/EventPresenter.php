@@ -66,14 +66,16 @@ class EventPresenter extends BasePresenter
 
 	    $form->addText("start_date", "Od:")
 		    ->setRequired("Zadej datum začátku!")
-		    ->setType('date');
+            ->setAttribute("class", "datepicker-here")
+            ->setAttribute("data-language", "cs");
 	    //$form->addText('start_time', 'Sraz:')
 	    //	->setType('time');
 	    $form->addText('start_place', 'místo:');
 
 	    $form->addText('end_date', 'Do:')
 	    	->setRequired("Zadej datum konce!")
-		    ->setType('date');
+            ->setAttribute("class", "datepicker-here")
+            ->setAttribute("data-language", "cs");
 	    //$form->addText('end_time', 'Konec:')
 	    //	->setType('time');
 	    $form->addText('end_place', 'místo:');

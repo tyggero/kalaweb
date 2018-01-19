@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Nette;
+use Nette\Utils\DateTime;
 
 class EventManager
 {
@@ -36,11 +37,16 @@ class EventManager
 
     public function getEvent($eventId)
     {
-        return $this->database->table('events')->get($eventId); //když nedostane z databáze, vrací NULL
+        $event = $this->database->table('events')->get($eventId); //když nedostane z databáze, vrací NULL
+        return $event;
     }
 
     public function saveEvent($values)
     {
+        //změnit přijatý formát datumů na formát v DB
+        $values->start_date = date('Y-m-d H:i:s', strtotime($values->start_date));
+        $values->end_date = date('Y-m-d H:i:s', strtotime($values->end_date));
+
         if($values->id){
             $event = $this->database->table('events')->get($values->id);
             $event->update($values);

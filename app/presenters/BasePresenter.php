@@ -64,8 +64,8 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
                 if ($type === 'button') {
                     $control->getControlPrototype()->addClass(empty($usedPrimary) ? 'btn btn-primary' : 'btn btn-default');
                     $usedPrimary = true;
-                } elseif (in_array($type, ['text', 'textarea', 'select'], true)) {
-                    $control->getControlPrototype()->addClass('form-controlXXXX');
+                } elseif (in_array($type, ['text', 'textarea', 'select'])) {
+                    $control->getControlPrototype()->addClass('form-control');
                 } elseif (in_array($type, ['checkbox', 'radio'], true)) {
                     $control->getSeparatorPrototype()->setName('div')->addClass($type);
                 } elseif ($type === 'date') {
