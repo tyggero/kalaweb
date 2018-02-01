@@ -13,6 +13,10 @@ class EventManager
      * @var Nette\Database\Context
      */
     private $database;
+    public $dateTimeformatDB = 'Y-m-d H:i';
+    public $dateFormat = 'd.m.Y';
+    public $timeFormat = 'H:i';
+
 
     public function __construct(Nette\Database\Context $database)
     {
@@ -43,14 +47,10 @@ class EventManager
 
     public function saveEvent($values)
     {
-        //změnit přijatý formát datumů na formát v DB
-        $values->start_date = date('Y-m-d H:i:s', strtotime($values->start_date));
-        $values->end_date = date('Y-m-d H:i:s', strtotime($values->end_date));
-
-        if($values->id){
+        if ($values->id) {
             $event = $this->database->table('events')->get($values->id);
             $event->update($values);
-        }else{
+        } else {
             $event = $this->database->table('events')->insert($values);
         }
         return $event;
@@ -68,5 +68,22 @@ class EventManager
         $event = $this->database->table('events')->get($eventId);
         $event->update(array('removed' => 0));
         return $event;
+    }
+
+    public function getFormatedDateStr($date)
+    {
+        $dateString = $date->format($this->dateFormat);
+        return $dateString;
+    }
+
+    public function getFormatedTimeStr($date)
+    {
+        $timeString = $date->format($this->timeFormat);
+        return $timeString;
+    }
+
+    public function createDate($dateStr, $timeStr)
+    {
+        return DateTime::createFromFormat($this->dateFormat." ".$this->timeFormat, $dateStr." ".$timeStr);
     }
 }

@@ -14,8 +14,8 @@
     	{/if}
     </div>
 
-	<div class="sraz">Sraz: {$event->start_time|date:'G:i'} {$event->start_place}</div>
-	<div class="sraz">Konec: {$event->end_time|date:'G:i'} {$event->end_place}</div>
+	<div class="sraz">Sraz: {$event->start_date|date:'G:i'} {$event->start_place}</div>
+	<div class="sraz">Konec: {$event->end_date|date:'G:i'} {$event->end_place}</div>
 	<div n:if="$event->fee" class="cena">Poplatek: {$event->fee}</div>
 
     <div>{$event->text}</div>

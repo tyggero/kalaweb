@@ -35,7 +35,12 @@ class EventPresenter extends BasePresenter
 	    if (!$event) {
 	        $this->error('Akce nebyla nalezena');
 	    }
-	    $this['eventForm']->setDefaults($event->toArray());
+        $eventArray = $event->toArray();
+        $eventArray['start_date_dateString'] = $this->eventManager->getFormatedDateStr($eventArray['start_date']);
+        $eventArray['start_date_timeString'] = $this->eventManager->getFormatedTimeStr($eventArray['start_date']);
+        $eventArray['end_date_dateString'] = $this->eventManager->getFormatedDateStr($eventArray['end_date']);
+        $eventArray['end_date_timeString'] = $this->eventManager->getFormatedTimeStr($eventArray['end_date']);
+	    $this['eventForm']->setDefaults($eventArray);
 	}
 
 	public function actionRemove($eventId)
@@ -64,20 +69,20 @@ class EventPresenter extends BasePresenter
 	    $form->addText('name', 'Název akce:')
 	        ->setRequired();
 
-	    $form->addText("start_date", "Od:")
+	    $form->addText("start_date_dateString", "Od:")
 		    ->setRequired("Zadej datum začátku!")
             ->setAttribute("class", "datepicker-here")
             ->setAttribute("data-language", "cs");
-	    //$form->addText('start_time', 'Sraz:')
-	    //	->setType('time');
+	    $form->addText('start_date_timeString', 'Sraz:');
+
 	    $form->addText('start_place', 'místo:');
 
-	    $form->addText('end_date', 'Do:')
+	    $form->addText('end_date_dateString', 'Do:')
 	    	->setRequired("Zadej datum konce!")
             ->setAttribute("class", "datepicker-here")
             ->setAttribute("data-language", "cs");
-	    //$form->addText('end_time', 'Konec:')
-	    //	->setType('time');
+        $form->addText('end_date_timeString', 'Sraz:');
+
 	    $form->addText('end_place', 'místo:');
 
 	    $form->addText('bring', 'S sebou:');
@@ -100,6 +105,16 @@ class EventPresenter extends BasePresenter
 	    }
 
 	    $values->id = $this->getParameter('eventId');
+
+        //spojit přijatý formát datumu a času na formát datumu v DB
+        //$values->start_date = date('Y-m-d H:i:s', strtotime($values->start_date_dateString." ".$values->start_date_timeString));
+        $values->start_date = $this->eventManager->createDate($values->start_date_dateString, $values->start_date_timeString);
+        unset($values->start_date_dateString);
+        unset($values->start_date_timeString);
+        //$values->end_date = date('Y-m-d H:i:s', strtotime($values->end_date_dateString." ".$values->end_date_timeString));
+        $values->end_date = $this->eventManager->createDate($values->end_date_dateString, $values->end_date_timeString);
+        unset($values->end_date_dateString);
+        unset($values->end_date_timeString);
 
 	    $event = $this->eventManager->saveEvent($values);
 
