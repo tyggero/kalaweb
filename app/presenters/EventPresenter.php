@@ -81,7 +81,7 @@ class EventPresenter extends BasePresenter
 
 	    $form->addText('start_place', 'místo:');
 
-        $form->addText('end_date_timeString', 'Sraz:');
+        $form->addText('end_date_timeString', 'Konec:');
 
 	    $form->addText('end_place', 'místo:');
 
