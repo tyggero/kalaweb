@@ -19,7 +19,7 @@
 	<div n:if="$event->fee" class="cena">Poplatek: {$event->fee}</div>
 
     <div>{$event->text}</div>
-    <div>Tajné poznámky: <i>{$event->notes}</i></div>
+    <div n:if="$user->isAllowed('Event', 'edit')">Tajné poznámky: <i>{$event->notes}</i></div>
 </div>
 
 <div class="date">Naposledy upraveno {$event->updated_at|date:'F j, Y'}</div>
