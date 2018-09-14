@@ -79,6 +79,9 @@ class EventManager
     public function getFormatedTimeStr($date)
     {
         $timeString = $date->format($this->timeFormat);
+        if ($timeString == '00:00'){
+            return null;
+        }
         return $timeString;
     }
 

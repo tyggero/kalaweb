@@ -18,8 +18,11 @@ class EventPresenter extends BasePresenter
 
     public function renderShow($eventId)
 	{
-    	$this->template->event = $this->eventManager->getEvent($eventId);
-	}
+        $event = $this->eventManager->getEvent($eventId);
+	    $this->template->event = $event;
+        $this->template->start_time = $this->eventManager->getFormatedTimeStr($event->start_date);
+        $this->template->end_time = $this->eventManager->getFormatedTimeStr($event->end_date);
+    }
 
 	public function actionCreate()
 	{
@@ -39,6 +42,7 @@ class EventPresenter extends BasePresenter
         $eventArray['dateRangeString'] = $this->eventManager->getFormatedDateStr($eventArray['start_date'])
                                                 .' - '
                                                 .$this->eventManager->getFormatedDateStr($eventArray['end_date']);
+
         $eventArray['start_date_timeString'] = $this->eventManager->getFormatedTimeStr($eventArray['start_date']);
         $eventArray['end_date_timeString'] = $this->eventManager->getFormatedTimeStr($eventArray['end_date']);
 	    $this['eventForm']->setDefaults($eventArray);
@@ -75,13 +79,16 @@ class EventPresenter extends BasePresenter
             ->setAttribute("class", "datepicker-here")
             ->setAttribute("data-language", "cs")
             ->setAttribute("data-range", "true")
-            ->setAttribute("data-multiple-dates-separator", " - ");
+            ->setAttribute("data-multiple-dates-separator", " - ")
+            ->setAttribute("autocomplete", "off");
 
-	    $form->addText('start_date_timeString', 'Sraz:');
+	    $form->addText('start_date_timeString', 'Sraz:')
+            ->setAttribute("type", "time");
 
 	    $form->addText('start_place', 'místo:');
 
-        $form->addText('end_date_timeString', 'Konec:');
+        $form->addText('end_date_timeString', 'Konec:')
+            ->setAttribute("type", "time");
 
 	    $form->addText('end_place', 'místo:');
 
@@ -113,6 +120,12 @@ class EventPresenter extends BasePresenter
         }
         unset($values->dateRangeString);
         //spojit přijatý formát datumu a času na formát datumu v DB
+        if(in_array($values->start_date_timeString, [0, null])){
+            $values->start_date_timeString = '00:00';
+        }
+        if(in_array($values->end_date_timeString, [0, null])){
+            $values->end_date_timeString = '00:00';
+        }
         $values->start_date = $this->eventManager->createDate($dateStrings[0], $values->start_date_timeString);
         unset($values->start_date_timeString);
         $values->end_date = $this->eventManager->createDate($dateStrings[1], $values->end_date_timeString);
